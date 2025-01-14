@@ -1,0 +1,36 @@
+.contenedor_del_contenedor_opciones{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.titulo-descuentos {
+    margin-top: 50px;
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .titulo-descuentos h1 {
+    font-family: 'Roboto', sans-serif; /* Fuente moderna y atractiva */
+    font-size: 5vw; /* Tamaño dinámico según el ancho de la ventana */
+    font-weight: bold;
+    color: #ff5733; /* Color vibrante */
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Sombra para darle más impacto */
+    margin: 0;
+  }
+  
+  /* Media Queries para ajustar el tamaño en pantallas pequeñas */
+  @media (max-width: 768px) {
+    .titulo-descuentos h1 {
+      font-size: 15vw; /* Ajusta el tamaño según la pantalla */
+    }
+  }
