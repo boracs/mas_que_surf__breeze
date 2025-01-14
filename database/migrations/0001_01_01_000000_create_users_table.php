@@ -21,9 +21,9 @@ return new class extends Migration
             $table->string('email', 100)->unique(); // Campo email
             $table->string('telefono', 50)->nullable(); // Campo telefono
             $table->integer('numeroTaquilla')->nullable(); // Campo numeroTaquilla
-            $table->string('alias', 50)->nullable(); // Campo alias
             $table->string('password'); // Campo password
             $table->timestamps(); // Campos created_at y updated_at
+            $table->timestamp('email_verified_at')->nullable()->after('email');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

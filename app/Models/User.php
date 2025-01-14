@@ -22,10 +22,12 @@ class User extends Authenticatable
         'email',
         'telefono',
         'numeroTaquilla',
-        'alias',
         'password',
     ];
-
+    // Valor por defecto para el campo 'role'
+    protected $attributes = [
+        'role' => 'user',
+    ];
     /**
      * Los atributos que deben ser ocultados para la serialización.
      *

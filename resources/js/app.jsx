@@ -1,24 +1,25 @@
+import '../css/app.css';
+import './bootstrap';
 
-
-import React from 'react';
+import { createInertiaApp } from '@inertiajs/react';
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
-import './bootstrap'; // Importa configuraciones adicionales si las tienes
-import '../css/app.css'; // Importa tus estilos CSS
-import Inicio from '../js/pages/Inicio';
 
+const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
-function App() {
-    return (
-        <div>
-            <Inicio/>
-        </div>
-    );
-}
+createInertiaApp({
+    title: (title) => `${title} - ${appName}`,
+    resolve: (name) =>
+        resolvePageComponent(
+            `./Pages/${name}.jsx`,
+            import.meta.glob('./Pages/**/*.jsx'),
+        ),
+    setup({ el, App, props }) {
+        const root = createRoot(el);
 
-const rootElement = document.getElementById('app');
-if (rootElement) {
-    const root = createRoot(rootElement);
-    root.render(<App />);
-} else {
-    console.error('No se encontró el elemento con id "app"');
-}
+        root.render(<App {...props} />);
+    },
+    progress: {
+        color: '#4B5563',
+    },
+});
