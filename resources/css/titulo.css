@@ -1,0 +1,25 @@
+.container_titulo {
+    width: 100%;
+    height: 250px;
+    display: flex;
+    align-items: center; /* Centra el contenido verticalmente */
+    justify-content: center; /* Centra el contenido horizontalmente */
+    margin: 0; /* Elimina márgenes */
+}
+
+.title {
+    width: 100%;
+    height: 100%;
+    background-image: url('/public/img/fondo_olas.jpg'); /* Imagen de fondo */
+    background-position: bottom; /* Alineación del fondo */
+    background-size: cover; /* Escala la imagen para cubrir todo el área */
+    color: #ffffff; /* Texto blanco para contraste */
+    text-align: center; /* Centra el texto horizontalmente */
+    font-family: 'Helvetica Neue', Arial, sans-serif; /* Tipografía moderna */
+    font-size: 2.5rem; /* Tamaño de la fuente */
+    padding: 20px 0; /* Espaciado vertical */
+    margin: 0; /* Elimina márgenes */
+    display: flex; /* Para centrar texto dentro del título */
+    align-items: center; /* Centra el texto verticalmente */
+    justify-content: center; /* Centra el texto horizontalmente */
+}

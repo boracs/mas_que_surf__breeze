@@ -1,0 +1,35 @@
+    /* Estilos para el contenedor del menú */
+nav {
+    background-color: #333; /* Fondo de color gris oscuro */
+    text-align: center; 
+    padding: 10px 0; 
+    margin: 0;
+}
+
+/* Estilos para la lista del menú */
+nav ul {
+    list-style: none; /* Elimina viñetas de la lista */
+    padding: 0; 
+    margin: 0; 
+    display: inline-block;
+}
+
+/* Estilos para los elementos de la lista */
+nav li {
+    display: inline; 
+    margin: 0 15px; 
+}
+
+/* Estilos para los enlaces del menú */
+nav a {
+    text-decoration: none; 
+    color: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 1rem; 
+    transition: color 0.3s ease; 
+}
+
+/* Efecto hover para los enlaces */
+nav a:hover {
+    color: #ff6347;
+}

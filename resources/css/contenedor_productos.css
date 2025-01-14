@@ -1,0 +1,8 @@
+.contenedor_productos {
+    padding: 50px 100px;
+    display: flex;
+    flex-wrap: wrap;  /* Permite que los elementos se acomoden en varias filas si es necesario */
+    gap: 2px;  /* Espacio entre los elementos */
+    justify-content: center;
+}
+
