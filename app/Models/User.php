@@ -2,31 +2,34 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * Los atributos que son asignables en masa.
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected $fillable = [
-        'name',
+        'role',
+        'nombre',
+        'apellido',
         'email',
+        'telefono',
+        'numeroTaquilla',
+        'alias',
         'password',
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Los atributos que deben ser ocultados para la serialización.
      *
-     * @var list<string>
+     * @var array<string>
      */
     protected $hidden = [
         'password',
@@ -34,15 +37,28 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * Los atributos que deben ser casteados.
      *
-     * @return array<string, string>
+     * @var array<string, string>
      */
-    protected function casts(): array
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
+    /**
+     * Relación con la tabla de pedidos (un usuario puede tener muchos pedidos).
+     */
+    public function pedidos()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasMany(Pedido::class, 'id_usuario');
+    }
+
+    /**
+     * Relación con la tabla de carrito (un usuario puede tener muchos productos en su carrito).
+     */
+    public function carrito()
+    {
+        return $this->hasMany(Carrito::class, 'id_usuario');
     }
 }
