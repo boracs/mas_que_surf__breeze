@@ -16,8 +16,6 @@ class Carrito extends Model
      */
     protected $fillable = [
         'id_usuario',
-        'id_producto',
-        'cantidad',
     ];
 
     /**
@@ -31,8 +29,17 @@ class Carrito extends Model
     /**
      * Relación con la tabla de productos (un carrito puede contener muchos productos).
      */
-    public function producto()
+
+    
+    public function productos()
     {
-        return $this->belongsTo(Producto::class, 'id_producto');
+        return $this->belongsToMany(Producto::class, 'carrito_producto')->withPivot('cantidad')->withTimestamps();
     }
+
+    
 }
+
+
+
+
+

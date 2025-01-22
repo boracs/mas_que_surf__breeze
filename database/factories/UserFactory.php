@@ -24,11 +24,17 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
+            'nombre' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+
+             // Aquí agregas los campos adicionales de tu modelo de Usuario
+            'role' => $this->faker->randomElement(['user', 'admin']),
+            'telefono' => $this->faker->phoneNumber,
+            'numeroTaquilla' => $this->faker->numberBetween(1, 100),  // Suponiendo que hay 100 taquillas
+            'apellido' => $this->faker->lastName, 
         ];
     }
 

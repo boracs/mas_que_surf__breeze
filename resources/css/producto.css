@@ -1,3 +1,8 @@
+
+
+
+
+
 .contenedor_producto {
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -8,9 +13,9 @@
     transition: transform 0.2s;
     margin: 16px;
 }
-
 .contenedor_producto:hover {
-    transform: scale(1.05);
+    transform: scale(1.05); /* Aumenta ligeramente el tamaño */
+    background-color: rgba(0, 0, 0, 0.1); /* Capa gris semitransparente */
 }
 
 .imagen_producto {
@@ -20,15 +25,9 @@
 }
 
 .nombre_producto {
-    font-size: 1.5rem;
-    margin: 12px 0;
+    font-size: 1.3rem;
+    margin: 6px 0;
     color: #333;
-}
-
-.precio_producto {
-    font-size: 1.2rem;
-    color: #666;
-    margin-bottom: 16px;
 }
 
 .boton_agregar {
@@ -53,6 +52,23 @@
 
 
 
+.des_preciofinal{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10PX;
+    color: red;
+    padding: 5PX;
+    font-size: 1.3rem;;
+    font-weight: 1000;
+}
+
+
+.precio_producto {
+    font-size: .8rem;
+    color: black;
+    margin-bottom: 5px;
+}
 
 
 

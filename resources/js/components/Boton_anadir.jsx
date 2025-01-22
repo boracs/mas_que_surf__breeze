@@ -7,7 +7,10 @@ const Boton_anadir = ({ onClick, label, disabled }) => (
         onClick={onClick} // Usa la función `onClick` pasada como prop
         disabled={disabled} // Usa el valor de `disabled` pasada como prop
     >
-        {disabled ? 'Agotado' : label} {/* Muestra el texto según el estado */}
+        {disabled ? 'Aún no puedes comprar' : label} {/* Muestra el texto según el estado */}
+        {disabled && (
+            <span className="tooltip">Para poder comprar, debes tener una taquilla</span> // El tooltip que aparece al hacer hover
+        )}
     </button>
 );
 

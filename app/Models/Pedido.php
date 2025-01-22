@@ -36,4 +36,13 @@ class Pedido extends Model
     {
         return $this->hasMany(PedidoProducto::class, 'id_pedido');
     }
+
+    /**
+     * Relación de muchos a muchos con productos a través de la tabla pivote pedido_producto.
+     */
+    public function productos()
+    {
+        return $this->belongsToMany(Producto::class, 'pedido_producto', 'id_pedido', 'id_producto')
+            ->withPivot('cantidad'); // Incluye la columna cantidad de la tabla pivote
+    }
 }

@@ -18,6 +18,8 @@ class Producto extends Model
         'nombre',
         'precio',
         'unidades',
+        'imagen',
+        'descuento',  
     ];
 
     /**
@@ -29,10 +31,11 @@ class Producto extends Model
     }
 
     /**
-     * Relación con la tabla de carrito (un producto puede estar en muchos carritos).
+     * Relación con la tabla de carrito (un producto puede estar en muchos c).
      */
-    public function carrito()
+    public function carritos()
     {
-        return $this->hasMany(Carrito::class, 'id_producto');
+        return $this->belongsToMany(Carrito::class, 'carrito_producto')->withPivot('cantidad')->withTimestamps();
     }
+
 }

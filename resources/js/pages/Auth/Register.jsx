@@ -4,6 +4,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
+import Boton_go_back from '../../components/Boton_go_back';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -26,11 +27,18 @@ export default function Register() {
 
     return (
         <GuestLayout>
+            
             <Head title="Register" />
+            
 
             <form onSubmit={submit}>
-                {/* Nombre */}
+                    
                 <div>
+                        REGISTRO MAS QUE SURF:
+                </div>
+
+                {/* Nombre */}
+                <div className="mt-4">
                     <InputLabel htmlFor="nombre" value="Nombre" />
 
                     <TextInput
@@ -38,14 +46,15 @@ export default function Register() {
                         name="nombre"
                         value={data.nombre}
                         className="mt-1 block w-full"
-                        autoComplete="name"
-                        isFocused={true}
                         onChange={(e) => setData('nombre', e.target.value)}
                         required
                     />
-
                     <InputError message={errors.nombre} className="mt-2" />
                 </div>
+
+
+
+
 
                 {/* Apellido */}
                 <div className="mt-4">
@@ -155,6 +164,7 @@ export default function Register() {
                         Registrar
                     </PrimaryButton>
                 </div>
+                <Boton_go_back/>
             </form>
         </GuestLayout>
     );
