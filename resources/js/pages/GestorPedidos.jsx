@@ -1,8 +1,22 @@
 import React, { useState } from 'react';
 import { Inertia } from '@inertiajs/inertia';
-import { HiCheckCircle, HiXCircle, HiFilter } from 'react-icons/hi';
+import { HiCheckCircle, HiXCircle, HiFilter,HiChevronLeft, HiChevronRight  } from 'react-icons/hi';
 import { Link } from "@inertiajs/react";
 import Layout1 from '../layouts/Layout1';
+import { usePage } from '@inertiajs/inertia-react';
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Componente para el filtro
 const FiltroPedidos = ({ filters, onChange, onApply }) => {
@@ -13,9 +27,9 @@ const FiltroPedidos = ({ filters, onChange, onApply }) => {
         <label className="text-sm font-medium text-gray-700">Pagado:</label>
         <select
           name="pagado"
-          value={filters.pagado}
+          value={filters.pagado || ''} // Si filters.pagado es null, se asigna una cadena vacía
           onChange={onChange}
-          className="border rounded-md text-sm py-2 px-3 focus:ring-2 focus:ring-blue-500"
+          className="border rounded-md text-sm focus:ring-2 focus:ring-blue-500"
         >
           <option value="">Todos</option>
           <option value="1">Sí</option>
@@ -27,9 +41,9 @@ const FiltroPedidos = ({ filters, onChange, onApply }) => {
         <label className="text-sm font-medium text-gray-700">Entregado:</label>
         <select
           name="entregado"
-          value={filters.entregado}
+          value={filters.entregado || ''} // Si filters.entregado es null, se asigna una cadena vacía
           onChange={onChange}
-          className="border rounded-md text-sm py-2 px-3 focus:ring-2 focus:ring-blue-500"
+          className="border rounded-md text-sm focus:ring-2 focus:ring-blue-500"
         >
           <option value="">Todos</option>
           <option value="1">Sí</option>
@@ -46,6 +60,19 @@ const FiltroPedidos = ({ filters, onChange, onApply }) => {
     </div>
   );
 };
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
 
 // Componente para cada pedido
 const PedidoItem = ({ pedido, onTogglePagado, onToggleEntregado }) => (
@@ -75,8 +102,8 @@ const PedidoItem = ({ pedido, onTogglePagado, onToggleEntregado }) => (
       </div>
 
       <div className="flex flex-col text-right">
-        <p className="text-sm text-gray-700">{pedido.usuario.nombre} {pedido.usuario.apellido}</p>
-        <p className="text-sm text-gray-700">{pedido.usuario.telefono}</p>
+      <p className="text-sm text-gray-700">{pedido.usuario?.nombre} {pedido.usuario?.apellido}</p>
+        <p className="text-sm text-gray-700">{pedido.usuario?.telefono}</p>
       </div>
     </div>
 
@@ -125,84 +152,237 @@ const PedidoItem = ({ pedido, onTogglePagado, onToggleEntregado }) => (
   </div>
 );
 
-// Componente principal GestorPedidos
-const GestorPedidos = ({ pedidos }) => {
-  const [filters, setFilters] = useState({
-    pagado: '',
-    entregado: '',
-  });
 
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+const GestorPedidos = ({ pedidos, totalPedidos, filters, currentPage, lastPage }) => {
+  const [filtersState, setFilters] = useState(filters);
   const [pedidosState, setPedidos] = useState(pedidos);
+  const [page, setPage] = useState(currentPage);
 
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilters({ ...filters, [name]: value });
-  };
 
+
+  // Función para aplicar filtros
   const applyFilters = (e) => {
     e.preventDefault(); // Previene la recarga de la página
     const nonEmptyFilters = {};
-    for (const [key, value] of Object.entries(filters)) {
+    for (const [key, value] of Object.entries(filtersState)) {
       if (value !== '') {
         nonEmptyFilters[key] = value;
       }
     }
-
-    Inertia.get(route('gestor.pedidos.filtrar'), nonEmptyFilters, {
+    // Recargar los pedidos con los filtros actuales
+    Inertia.get(route('gestor.pedidos.filtrar'), {
+      ...nonEmptyFilters,
+      page: 1, // Reseteamos a la primera página al aplicar los filtros
+    }, {
       onSuccess: (response) => {
         setPedidos(response.props.pedidos.data);
+        setPage(1); // Reiniciar a la primera página
       },
     });
   };
 
-  const handleTogglePagado = (pedidoId, event) => {
-    event.preventDefault(); // Asegura que la página no se recargue
-    Inertia.patch(`/pedido/${pedidoId}/toggle-pagado`, {}, {
-      onSuccess: () => {
-        setPedidos((prevState) =>
-          prevState.map((pedido) =>
-            pedido.id === pedidoId ? { ...pedido, pagado: !pedido.pagado } : pedido
-          )
-        );
-      },
+  // Función para cambiar de página
+  const loadPedidos = (newPage) => {
+    setPage(newPage);
+    Inertia.get(route('gestor.pedidos.filtrar'), {
+      ...filtersState,  // Mantener los filtros
+      page: newPage,
+    }, {
+      onSuccess: (response) => {
+        setPedidos(response.props.pedidos.data);
+      }
     });
   };
 
-  const handleToggleEntregado = (pedidoId, event) => {
-    event.preventDefault(); // Asegura que la página no se recargue
-    Inertia.patch(`/pedido/${pedidoId}/toggle-entregado`, {}, {
-      onSuccess: () => {
-        setPedidos((prevState) =>
-          prevState.map((pedido) =>
-            pedido.id === pedidoId ? { ...pedido, entregado: !pedido.entregado } : pedido
-          )
-        );
+  // Función para manejar el cambio de filtros
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters({ ...filtersState, [name]: value });
+  };
+
+   /////////    TOOGLESSSSS   ////////////
+
+// Función para toggle de estado 'pagado'
+const handleTogglePagado = async (pedidoId, event) => {
+  event.preventDefault();
+  try {
+    const response = await fetch(`/pedido/${pedidoId}/toggle-pagado`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
       },
     });
-  };
+
+    if (response.ok) {
+      const data = await response.json();
+      setPedidos((prevState) =>
+        prevState.map((pedido) =>
+          pedido.id === pedidoId ? data.pedido : pedido
+        )
+      );
+    } else {
+      console.error('Error al actualizar el estado de pagado');
+    }
+  } catch (error) {
+    console.error('Error en la petición:', error);
+  }
+};
+
+// Función para toggle de estado 'entregado'
+const handleToggleEntregado = async (pedidoId, event) => {
+  event.preventDefault();
+  try {
+    const response = await fetch(`/pedido/${pedidoId}/toggle-entregado`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      setPedidos((prevState) =>
+        prevState.map((pedido) =>
+          pedido.id === pedidoId ? data.pedido : pedido
+        )
+      );
+    } else {
+      console.error('Error al actualizar el estado de entregado');
+    }
+  } catch (error) {
+    console.error('Error en la petición:', error);
+  }
+};
+
+////////  FIN   TOOGLESSSSS    ////////////
+
 
   return (
     <Layout1>
-        <div className="container mx-auto p-6">
-          <h1 className="text-3xl font-semibold text-center mb-6 text-gray-800">Gestor de Pedidos</h1>
-
-          <FiltroPedidos filters={filters} onChange={handleFilterChange} onApply={applyFilters} />
-
-          <div className="pedido-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {pedidosState && pedidosState.length > 0 ? (
-              pedidosState.map((pedido) => (
-                <PedidoItem
-                  key={pedido.id}
-                  pedido={pedido}
-                  onTogglePagado={handleTogglePagado}
-                  onToggleEntregado={handleToggleEntregado}
-                />
-              ))
-            ) : (
-              <p className="text-gray-600 mt-4 col-span-3 text-center">No hay pedidos disponibles.</p>
-            )}
-          </div>
+      <div className="container mx-auto p-6">
+        <h1 className="text-3xl font-semibold text-center mb-6 text-gray-800">Gestor de Pedidos</h1>
+        <div className="flex justify-center my-8">
+          <h2 className="text-3xl font-semibold text-gray-800 text-red-500">
+            Total de Pedidos: {totalPedidos}
+          </h2>
         </div>
+
+        {/* Filtro de pedidos */}
+        <FiltroPedidos filters={filtersState} onChange={handleFilterChange} onApply={applyFilters} />
+
+        {/* Lista de pedidos */}
+        <div className="pedido-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {pedidosState && pedidosState.length > 0 ? (
+            pedidosState.map((pedido) => (
+              <PedidoItem
+                key={pedido.id}
+                pedido={pedido}
+                onTogglePagado={handleTogglePagado}
+                onToggleEntregado={handleToggleEntregado}
+              />
+            ))
+          ) : (
+            <p className="text-gray-600 mt-4 col-span-3 text-center">No hay pedidos disponibles.</p>
+          )}
+        </div>
+
+{/* Paginación */}
+<div className="flex justify-center items-center mt-6 space-x-4">
+  {/* Botón Anterior */}
+  <button
+    onClick={() => loadPedidos(page - 1)}
+    disabled={page <= 1}
+    className={`flex items-center justify-center p-2 rounded-full transition-all duration-300 ease-in-out ${
+      page <= 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-200'
+    }`}
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      className="w-6 h-6 text-gray-600 hover:text-gray-800"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M19 12H5m7-7l-7 7 7 7"
+      />
+    </svg>
+  </button>
+
+  {/* Texto de Página Actual */}
+  <span className="text-gray-700 font-medium text-sm">
+    {page} de {lastPage}
+  </span>
+
+  {/* Botón Siguiente */}
+  <button
+    onClick={() => loadPedidos(page + 1)}
+    disabled={page >= lastPage}
+    className={`flex items-center justify-center p-2 rounded-full transition-all duration-300 ease-in-out ${
+      page >= lastPage ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-200'
+    }`}
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      className="w-6 h-6 text-gray-600 hover:text-gray-800"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M5 12h14m-7 7l7-7-7-7"
+      />
+    </svg>
+  </button>
+</div>
+      </div>
     </Layout1>
   );
 };
