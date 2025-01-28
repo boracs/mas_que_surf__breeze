@@ -19,17 +19,27 @@ const ConfirmacionPedido = () => {
                     <div className="bg-gray-50 p-4 rounded-lg shadow-sm mb-6">
                         <h3 className="text-xl font-semibold text-gray-800 mb-4">Productos en tu Pedido</h3>
                         <ul className="space-y-4">
-                            {productos.map((producto, index) => (
-                                <li key={index} className="flex justify-between items-center">
-                                    <div>
-                                        <p className="text-lg font-medium text-gray-800">{producto.nombre}</p>
-                                        <p className="text-sm text-gray-600">Cantidad: {producto.pivot.cantidad}</p>
-                                    </div>
-                                    <p className="text-lg text-gray-800 font-semibold">
-                                        {(producto.precio * producto.pivot.cantidad).toFixed(2)} €
-                                    </p>
-                                </li>
-                            ))}
+                            {productos.map((producto, index) => {
+                                const precioConDescuento = producto.precio - (producto.precio * (producto.descuento / 100));
+                                const precioTotalProducto = precioConDescuento * producto.pivot.cantidad;
+                                
+                                return (
+                                    <li key={index} className="flex justify-between items-center border-b border-gray-300 py-3">
+                                        <div className="flex flex-col">
+                                            <p className="text-lg font-medium text-gray-800">{producto.nombre}</p>
+                                            <p className="text-sm text-gray-600">Cantidad: {producto.pivot.cantidad}</p>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="text-sm text-gray-500 line-through">
+                                                {(producto.precio * producto.pivot.cantidad).toFixed(2)} €
+                                            </p>
+                                            <p className="text-lg text-gray-800 font-semibold">
+                                                {new Intl.NumberFormat('es-ES', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(precioConDescuento)} € / Unidad
+                                            </p>
+                                        </div>
+                                    </li>
+                                );
+                            })}
                         </ul>
                     </div>
 
@@ -39,14 +49,10 @@ const ConfirmacionPedido = () => {
                             {new Intl.NumberFormat('es-ES', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(totalConDescuento)} €
                         </p>
                     </div>
-
-                    <div className="mt-6 text-center">
-                        <button
-                            onClick={() => window.location.href = `/mostrar-pedido/${id_pedido}`} // Usamos el id_pedido en la URL
-                            className="px-6 py-3 bg-green-500 text-white rounded-lg font-medium hover:bg-green-600"
-                        >
-                            Ver detalles del pedido
-                        </button>
+                    <div>
+                        <p>
+                            Si tiene algun duda o quieres cancelar un pedido no te preocupes, solo tienes que avisarnos. 
+                        </p>
                     </div>
                 </div>
             </div>

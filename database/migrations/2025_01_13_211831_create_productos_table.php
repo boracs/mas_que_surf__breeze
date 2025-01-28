@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('unidades');
             $table->string('imagen');
             $table->decimal('descuento', 8, 2)->nullable();
+            $table->boolean('eliminado')->default(false); 
             $table->timestamps();
         });
     }

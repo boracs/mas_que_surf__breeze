@@ -9,20 +9,23 @@ const Carrito = () => {
     const [productosEnCarrito, setProductosEnCarrito] = useState(productos);
     const [totalCarrito, setTotalCarrito] = useState(total);
     
-    // Estado para mostrar el modal de confirmación
+    // Estado para mostrar el modal de confirmación de eliminación
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [productoAEliminar, setProductoAEliminar] = useState(null);
 
-    // Función para abrir el modal
+    // Estado para mostrar el modal de confirmación de pedido
+    const [isModalConfirmacionPedidoOpen, setIsModalConfirmacionPedidoOpen] = useState(false);
+
+    // Función para abrir el modal de eliminación
     const abrirModal = (productoId) => {
-        setProductoAEliminar(productoId); // Guardar el producto que se va a eliminar
-        setIsModalOpen(true); // Mostrar el modal
+        setProductoAEliminar(productoId);
+        setIsModalOpen(true);
     };
 
-    // Función para cerrar el modal
+    // Función para cerrar el modal de eliminación
     const cerrarModal = () => {
         setIsModalOpen(false);
-        setProductoAEliminar(null); // Limpiar el producto seleccionado
+        setProductoAEliminar(null);
     };
 
     // Función para eliminar el producto
@@ -38,7 +41,7 @@ const Carrito = () => {
                     setTotalCarrito(prevTotal => 
                         prevTotal - productosEnCarrito.find(producto => producto.id === productoAEliminar)?.subtotal || 0
                     );
-                    cerrarModal(); // Cerrar el modal tras eliminar el producto
+                    cerrarModal();
                 },
                 onError: (error) => {
                     console.error('Error al eliminar el producto:', error);
@@ -48,11 +51,23 @@ const Carrito = () => {
         }
     };
 
+    // Función para abrir el modal de confirmación de pedido
+    const abrirModalConfirmacionPedido = () => {
+        setIsModalConfirmacionPedidoOpen(true);
+    };
+
+    // Función para cerrar el modal de confirmación de pedido
+    const cerrarModalConfirmacionPedido = () => {
+        setIsModalConfirmacionPedidoOpen(false);
+    };
+
+    // Función para realizar el pedido
     const realizarPedidoHandler = async () => {
         Inertia.post(route('crear.pedido'), { 
             productos: productosEnCarrito,
             total: totalCarrito,
         });
+        cerrarModalConfirmacionPedido(); // Cerrar el modal tras realizar el pedido
     };
 
     return (
@@ -78,7 +93,7 @@ const Carrito = () => {
                                             </p>
                                             <p className="text-gray-500">Subtotal: {producto.subtotal} €</p>
                                             
-                                            {/* Botón para abrir el modal */}
+                                            {/* Botón para abrir el modal de eliminación */}
                                             <button
                                                 onClick={() => abrirModal(producto.id)}
                                                 className="px-2 py-1 bg-red-500 text-white rounded"
@@ -100,7 +115,7 @@ const Carrito = () => {
                             <div className="mt-6 text-center">
                                 {productosEnCarrito.length > 0 ? (
                                     <button
-                                        onClick={realizarPedidoHandler}
+                                        onClick={abrirModalConfirmacionPedido}
                                         className="px-4 py-2 bg-green-500 text-white rounded"
                                     >
                                         Realizar Pedido
@@ -119,7 +134,7 @@ const Carrito = () => {
                 </div>
             </div>
 
-            {/* Modal de Confirmación */}
+            {/* Modal de Confirmación de Eliminación */}
             {isModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
                     <div className="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full">
@@ -139,6 +154,34 @@ const Carrito = () => {
                             <button
                                 onClick={eliminarProducto}
                                 className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                            >
+                                Confirmar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Modal de Confirmación de Pedido */}
+            {isModalConfirmacionPedidoOpen && (
+                <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
+                    <div className="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full">
+                        <h3 className="text-2xl font-semibold text-gray-800 mb-4">
+                            Confirmación de Pedido
+                        </h3>
+                        <p className="text-lg text-gray-600 mb-4">
+                            Estás a punto de realizar el pedido. ¿Estás seguro de que deseas continuar?
+                        </p>
+                        <div className="flex justify-end space-x-4">
+                            <button
+                                onClick={cerrarModalConfirmacionPedido}
+                                className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+                            >
+                                Cancelar
+                            </button>
+                            <button
+                                onClick={realizarPedidoHandler}
+                                className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
                             >
                                 Confirmar
                             </button>

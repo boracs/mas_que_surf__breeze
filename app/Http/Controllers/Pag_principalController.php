@@ -11,8 +11,8 @@ class Pag_principalController extends Controller
 {
     public function index()
     {
-        // Obtener todos los productos
-        $productos = Producto::all();
+        // Obtener los 7 primeros productos con mayor descuentos 
+        $productos = Producto::orderBy('descuento', 'desc')->take(10)->get();
     
         // Obtener el usuario autenticado
         $user = auth()->user();

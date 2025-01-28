@@ -1,36 +1,36 @@
-import '../css/app.css';
-import './bootstrap';
-import { createInertiaApp } from '@inertiajs/react';
-import { createRoot } from 'react-dom/client';
-import React from 'react';
+import "../css/app.css";
+import "./bootstrap";
+import { createInertiaApp } from "@inertiajs/react";
+import { createRoot } from "react-dom/client";
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+
+const appName = import.meta.env.VITE_APP_NAME || "Laravel";
+
+// Función para obtener el layout según la ruta
+function getDefaultLayout(page) {
+    if (page.startsWith("Public/")) {
+        return (page) => <PublicLayout>{page}</PublicLayout>;
+    }
+
+    if (page.startsWith("Admin/")) {
+        return (page) => <AdminLayout>{page}</AdminLayout>;
+    }
+
+    return undefined; // Si no coincide, no se asigna un layout específico
+}
 
 createInertiaApp({
-    resolve: (name) => {
-        console.log(`Resolviendo página: ${name}`);
-        
-        // Verificamos si el nombre contiene 'Auth/' y lo manejamos de forma especial
-        if (name.startsWith('Auth/')) {
-            // Extraemos la parte después de 'Auth/', por ejemplo 'Login' o 'Register'
-            const pageName = name.split('/')[1];  // Obtiene 'Login' o 'Register'
-            console.log(`Importando página desde Auth: ${pageName}`);
-            return import(`./Pages/Auth/${pageName}.jsx`);  // Importa desde Pages/Auth
-        }
-        
-        // Si no es una página dentro de Auth, cargamos normalmente desde Pages
-        console.log(`Importando página desde Pages: ${name}`);
-        return import(`./Pages/${name}.jsx`);
-    },
-
     title: (title) => `${title} - ${appName}`,
-    
-    setup({ el, App, props }) {
-        const root = createRoot(el);
-        root.render(<App {...props} />);
-    },
+    resolve: (name) => {
+        const pages = import.meta.glob("./Pages/**/*.jsx", { eager: true });
 
-    progress: {
-        color: '#4B5563',
+        // Asignar el layout a cada página según su ruta
+        let page = pages[`./Pages/${name}.jsx`];
+        page.default.layout = getDefaultLayout(name); // Asignar el layout dinámico
+        return page;
     },
+    setup({ el, App, props }) {
+        createRoot(el).render(<App {...props} />);
+    },
+    progress: false, // Puedes habilitar el progreso si lo necesitas
 });

@@ -20,6 +20,7 @@ class Producto extends Model
         'unidades',
         'imagen',
         'descuento',  
+        'eliminado',
     ];
 
     /**
@@ -37,5 +38,16 @@ class Producto extends Model
     {
         return $this->belongsToMany(Carrito::class, 'carrito_producto')->withPivot('cantidad')->withTimestamps();
     }
+
+
+    public function pedidos()
+    {
+        return $this->belongsToMany(Pedido::class, 'producto_pedido')
+                    ->withPivot('descuento_aplicado', 'precio_pagado') // Campos adicionales de la tabla pivote
+                    ->withTimestamps(); // Registra las marcas de tiempo en la tabla pivote
+    }
+
+
+
 
 }

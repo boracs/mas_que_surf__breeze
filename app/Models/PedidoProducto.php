@@ -18,6 +18,8 @@ class PedidoProducto extends Model
         'id_pedido',
         'id_producto',
         'cantidad',
+        'descuento_aplicado', 
+        'precio_pagado',       
     ];
 
     /**

@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('id_pedido')->constrained('pedidos');
             $table->foreignId('id_producto')->constrained('productos');
             $table->integer('cantidad');
+            $table->decimal('descuento_aplicado', 5, 2)->default(0.00); 
+            $table->decimal('precio_pagado', 10, 2)->default(0.00);    
             $table->timestamps();
         });
     }

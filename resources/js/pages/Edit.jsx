@@ -3,7 +3,7 @@ import { Head } from '@inertiajs/react';
 import DeleteUserForm from './Partials/DeleteUserForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
-import Boton_go_back from '../../components/Boton_go_back';
+import Boton_go_back from '../components/Boton_go_back';
 
 
 export default function Edit({ mustVerifyEmail, status }) {

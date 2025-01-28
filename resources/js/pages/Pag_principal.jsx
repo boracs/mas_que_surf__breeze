@@ -4,6 +4,7 @@ import '../../css/pagina_principal.css';
 import Contenedor_productos from '../layouts/Contenedor_productos';
 import { Head } from '@inertiajs/react';
 import Contenedor_opciones from'../layouts/Contenedor_opciones';
+import OpcionesIntro from '../components/OpcionesIntro';
 
 const Pag_principal = ({ productos}) => (
     <div>
@@ -17,9 +18,8 @@ const Pag_principal = ({ productos}) => (
               
                 </div>
                 <div>
-                    <div className='cont_opc_pag_pricn'>
-                      <Contenedor_opciones className='Contenedor_opciones' />
-                    </div>
+                <OpcionesIntro></OpcionesIntro>
+                
                     {productos.length > 0 ? (
                         <Contenedor_productos productos={productos} />
                     ) : (

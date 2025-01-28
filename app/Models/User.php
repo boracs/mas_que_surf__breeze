@@ -63,4 +63,15 @@ class User extends Authenticatable
     {
         return $this->hasOne(Carrito::class, 'id_usuario');
     }
+
+
+////////////////////////////////
+// Relación con Productos
+public function productos()
+{
+    return $this->belongsToMany(Producto::class)->withPivot('cantidad', 'descuento_aplicado', 'precio_pagado');
+}
+//////////////////////////////////
+
+
 }

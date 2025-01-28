@@ -49,17 +49,38 @@ const Menu_Principal = () => {
                         <Link href={route('nosotros')} className="hover:text-red-500">Nosotros</Link>
                         <Link href={route('tienda')} className="hover:text-red-500">Tienda</Link>
                         <Link href={route('contacto')} className="hover:text-red-500">Contacto</Link>
+                       
+                
+                        {/* Mostrar enlace de productos solo si el usuario es admin */}
+                        {user && user.role === 'admin' && (
+                            <>
+                                <Link href={route('mostrar.productos')} className="hover:text-red-500">
+                                    Productos
+                                </Link>
+                                <Link href={route('asignar.taquilla.mostrar')} className="hover:text-red-500 ml-4">
+                                    Asignar Taquilla
+                                </Link>
+                                <Link href={route('gestor.pedidos')} className="hover:text-red-500">Gestor Pedidos</Link>
+                            </>
+                        )}
+
+
+
+
 
                         {user && (
-                            <Link href={route('carrito')} className="flex items-center hover:text-red-500">
-                                <FontAwesomeIcon icon={faShoppingCart} className="mr-2" />
-                                Carrito
-                                {cartCount > 0 && (
-                                    <span className="ml-2 bg-red-500 text-white text-xs rounded-full px-2 py-1">
-                                      {cartCount }
-                                    </span>
-                                )}
-                            </Link>
+                             <>
+                                <Link href={route('pedidos')} className="hover:text-red-500">Mis Pedidos</Link>
+                                <Link href={route('carrito')} className="flex items-center hover:text-red-500">
+                                    <FontAwesomeIcon icon={faShoppingCart} className="mr-2" />
+                                    Carrito
+                                    {cartCount > 0 && (
+                                        <span className="ml-2 bg-red-500 text-white text-xs rounded-full px-2 py-1">
+                                        {cartCount }
+                                        </span>
+                                    )}
+                                </Link>
+                             </>
                         )}
                     </div>
 
@@ -126,9 +147,27 @@ const Menu_Principal = () => {
                     <Link href={route('nosotros')} className="block text-gray-700 hover:text-red-500">Nosotros</Link>
                     <Link href={route('tienda')} className="block text-gray-700 hover:text-red-500">Tienda</Link>
                     <Link href={route('contacto')} className="block text-gray-700 hover:text-red-500">Contacto</Link>
-
+                    {user && user.role === 'admin' && (
+                            <>
+                            <div>
+                                <Link href={route('mostrar.productos')} className="hover:text-red-500">
+                                    Productos
+                                </Link>
+                            </div>
+                            <div>
+                                <Link href={route('asignar.taquilla.mostrar')} className="hover:text-red-500">
+                                    Asignar Taquilla
+                                </Link>
+                            </div>
+                            <div>
+                                <Link href={route('gestor.pedidos')} className="block text-gray-700 hover:text-red-500">Gestor Pedidos</Link>
+                            </div>
+                            </>
+                        )}
                     {user && (
-                        <Link href={route('carrito')} className="flex items-center text-gray-700 hover:text-red-500">
+                        <>
+                          <Link href={route('pedidos')} className="block text-gray-700 hover:text-red-500">Mis Pedidos</Link>
+                          <Link href={route('carrito')} className="flex items-center text-gray-700 hover:text-red-500">
                             <FontAwesomeIcon icon={faShoppingCart} className="mr-2" />
                             Carrito
                             {cartCount  > 0 && (
@@ -137,6 +176,8 @@ const Menu_Principal = () => {
                                 </span>
                             )}
                         </Link>
+                
+                        </>
                     )}
 
                     {/* Mostrar login en dispositivos móviles también */}

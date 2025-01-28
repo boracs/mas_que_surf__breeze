@@ -1,15 +1,17 @@
 import React from 'react';
-import '../../css/Boton_anadir.css';
 
-const Boton_anadir = ({ onClick, label, disabled }) => (
-    <button
-        className="boton_agregar"
+
+const Boton_anadir = ({ onClick, label, disabled, unidades }) => (
+    <button 
+        className={`w-full px-4 py-2 text-white font-medium rounded-md transition-colors duration-300 ${
+            disabled || unidades === 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
+        }`}
         onClick={onClick} // Usa la función `onClick` pasada como prop
-        disabled={disabled} // Usa el valor de `disabled` pasada como prop
+        disabled={disabled || unidades === 0} // Deshabilita si no hay unidades
     >
-        {disabled ? 'Aún no puedes comprar' : label} {/* Muestra el texto según el estado */}
-        {disabled && (
-            <span className="tooltip">Para poder comprar, debes tener una taquilla</span> // El tooltip que aparece al hacer hover
+        {unidades === 0 ? 'Producto agotado' : 'Añadir al carrito'} {/* Cambia el texto según las unidades */}
+        {unidades === 0 && (
+            <span className="tooltip">El producto ya no está disponible</span> // Tooltip al hacer hover
         )}
     </button>
 );
