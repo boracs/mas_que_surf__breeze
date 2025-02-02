@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Http\Controllers\TaquillaController;
 use App\Http\Controllers\TiendaController;
 use App\Http\Controllers\ProductoController;
@@ -30,22 +29,26 @@ Route::post('/register', [RegisteredUserController::class, 'store']);
 
 //PAGINA PRINCIPAL
 Route::get('/', [Pag_principalController::class, 'index'])->name('Pag_principal');
-
-
-
-
-//rutas provisonales para evitar errores 
 //NOSOTROS
 Route::get('/nosotros', function () { return Inertia::render('Nosotros');})->name('nosotros');
 //TIENDA
-
-Route::get('/tienda', [TiendaController::class, 'index'])->name('tienda');
+Route::get('/tienda', [TiendaController::class, 'index_mas_que_surf'])->name('tienda');
+Route::get('/tienda-oficial', [TiendaController::class, 'index_oficial'])->name('tienda.oficial');
 //CONTACTO
 Route::get('/contacto', function () { return Inertia::render('Contacto');})->name('contacto');
-
-//productos ver informacion del prrodcuto no ahc efalta estar logeado 
+//PRODUCTO INDIV
 Route::get('/producto-ver/{productoId}', [ProductoController::class, 'ver'])->name('producto.ver');
-Route::get('/producto-info', function () { return Inertia::render('ProductoVer');})->name('producto.info');
+// 
+Route::get('/producto-info', function () { return Inertia::render('ProductoVer');})->name('producto.info');//ESTACREO K SOBRA
+
+//SERVICIOS 
+Route::get('/servicios', function () {return Inertia::render('Servicios');})->name('servicios');
+Route::get('/servicios/surf', function () {return Inertia::render('Servicios_ClasesDeSurf');})->name('servicios.surf');
+Route::get('/servicios/surf-skate', function () {return Inertia::render('Servicios_SurfSkate');})->name('servicios.surfSkate');
+Route::get('/servicios/surf-trips', function () { return Inertia::render('Servicios_SurfTrips');})->name('servicios.surfTrips'); 
+Route::get('/servicios/fotos', function () { return Inertia::render('Servicios_Fotos');})->name('servicios.fotografia'); 
+
+
 
 
 // rutas del carrito de compra 
@@ -98,10 +101,6 @@ Route::middleware(['auth'])->group(function () {
 
         //USUARIOS
         Route::get('/listaUsuarios', [TaquillaController::class, 'listaUsuarios'])->name('listaUsuarios');
-
-
-
-
 });
 
 

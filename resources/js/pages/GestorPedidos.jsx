@@ -239,6 +239,9 @@ const GestorPedidos = ({ pedidos, totalPedidos, filters, currentPage, lastPage }
     setFilters({ ...filtersState, [name]: value });
   };
 
+
+
+  
    /////////    TOOGLESSSSS   ////////////
 
 // Función para toggle de estado 'pagado'

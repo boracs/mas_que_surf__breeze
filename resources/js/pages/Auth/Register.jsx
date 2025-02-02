@@ -5,6 +5,7 @@ import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import Boton_go_back from '../../components/Boton_go_back';
+import Layout1 from '@/layouts/Layout1';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -26,6 +27,7 @@ export default function Register() {
     };
 
     return (
+        <Layout1>
         <GuestLayout>
             
             <Head title="Register" />
@@ -167,5 +169,6 @@ export default function Register() {
                 <Boton_go_back/>
             </form>
         </GuestLayout>
+        </Layout1>
     );
 }

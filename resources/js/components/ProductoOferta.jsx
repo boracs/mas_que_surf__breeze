@@ -36,7 +36,7 @@ const ProductoOferta = ({ nombre, precio, imagen, unidades, descuento, producto 
 
     return (
         <div>
-            <div className="flex justify-center items-center bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 p-4 rounded-lg shadow-md w-full max-w-sm mx-auto">
+            <div className="mt-16 flex justify-center items-center bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 p-4 rounded-lg shadow-md w-full max-w-sm mx-auto">
                 <h1 className="text-white text-xl font-semibold text-center uppercase tracking-normal">
                     Mejores Ofertas
                 </h1>

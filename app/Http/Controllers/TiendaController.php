@@ -9,7 +9,16 @@ use Inertia\Inertia;
 class TiendaController extends Controller
 {
     // Muestra la página de la tienda con los productos
-        public function index()
+        public function index_mas_que_surf()
+        {
+            // Filtrar productos que no están eliminados
+            $productos = Producto::where('eliminado', 0)->get(); // Solo productos no eliminados
+    
+            return Inertia::render('Tienda', [
+                'productos' => $productos,
+            ]);
+        }
+        public function index_oficial()
         {
             // Filtrar productos que no están eliminados
             $productos = Producto::where('eliminado', 0)->get(); // Solo productos no eliminados
@@ -19,6 +28,9 @@ class TiendaController extends Controller
             ]);
         }
     
+
+
+
         // Agrega un producto al carrito
         public function agregarAlCarrito(Request $request)
         {
@@ -29,4 +41,7 @@ class TiendaController extends Controller
     
             return response()->json(['mensaje' => 'Producto añadido al carrito']);
         }
+
+
+        
  }
